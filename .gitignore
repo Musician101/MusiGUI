@@ -1,0 +1,5 @@
+.gradle/
+.idea/
+common/build/
+spigot/build/
+sponge/build/
