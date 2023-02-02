@@ -30,7 +30,7 @@ public final class GUIButton<C, P, S> {
     private final int slot;
 
     /**
-     * @param slot The slot the button sits in.
+     * @param slot      The slot the button sits in.
      * @param itemStack The item stack to represent the button.
      */
     public GUIButton(int slot, @Nonnull S itemStack) {
@@ -38,9 +38,9 @@ public final class GUIButton<C, P, S> {
     }
 
     /**
-     * @param slot The slot the button sits in.
+     * @param slot      The slot the button sits in.
      * @param itemStack The item stack to represent the button.
-     * @param actions A map of click types and their associated actions.
+     * @param actions   A map of click types and their associated actions.
      */
     public GUIButton(int slot, @Nonnull S itemStack, @Nonnull Map<C, Consumer<P>> actions) {
         this.slot = slot;

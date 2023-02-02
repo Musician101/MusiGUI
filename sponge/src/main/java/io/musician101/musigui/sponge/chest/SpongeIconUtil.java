@@ -24,32 +24,26 @@ public class SpongeIconUtil {
 
     }
 
-    public static <E> ItemStack offer(@Nonnull ItemStack itemStack, @Nonnull Supplier<Key<? extends Value<E>>> key, E value) {
-        itemStack.offer(key, value);
-        return itemStack;
+    public static ItemStack addEnchantment(@Nonnull ItemStack itemStack, @Nonnull Enchantment Enchantment) {
+        return addEnchantments(itemStack, List.of(Enchantment));
     }
 
-    public static <E> ItemStack offer(@Nonnull ItemStack itemStack, @Nonnull Key<? extends Value<E>> key, E value) {
-        itemStack.offer(key, value);
-        return itemStack;
+    public static ItemStack addEnchantmentType(@Nonnull ItemStack itemStack, @Nonnull Supplier<? extends EnchantmentType> EnchantmentType) {
+        return addEnchantmentType(itemStack, EnchantmentType.get());
     }
 
-    public static ItemStack customName(@Nonnull ItemStack itemStack, @Nonnull Component name) {
-        return offer(itemStack, Keys.CUSTOM_NAME, name);
+    public static ItemStack addEnchantmentType(@Nonnull ItemStack itemStack, @Nonnull EnchantmentType EnchantmentType) {
+        return addEnchantmentTypes(itemStack, List.of(EnchantmentType));
     }
 
-    /**
-     * Warning that all previous lore will be removed.
-     */
-    public static ItemStack setLore(@Nonnull ItemStack itemStack, @Nonnull Component lore) {
-        return setLore(itemStack, List.of(lore));
+    public static ItemStack addEnchantmentTypes(@Nonnull ItemStack itemStack, @Nonnull List<EnchantmentType> EnchantmentTypes) {
+        return addEnchantments(itemStack, EnchantmentTypes.stream().map(e -> Enchantment.of(e, 1)).toList());
     }
 
-    /**
-     * Warning that all previous lore will be removed.
-     */
-    public static ItemStack setLore(@Nonnull ItemStack itemStack, @Nonnull List<Component> lore) {
-        return offer(itemStack, Keys.LORE, lore);
+    public static ItemStack addEnchantments(@Nonnull ItemStack itemStack, @Nonnull List<Enchantment> Enchantment) {
+        List<Enchantment> list = new ArrayList<>(itemStack.get(Keys.APPLIED_ENCHANTMENTS).orElse(List.of()));
+        list.addAll(Enchantment);
+        return offer(itemStack, Keys.APPLIED_ENCHANTMENTS, list);
     }
 
     public static ItemStack addLore(@Nonnull ItemStack itemStack, @Nonnull Component lore) {
@@ -60,6 +54,46 @@ public class SpongeIconUtil {
         List<Component> list = new ArrayList<>(itemStack.get(Keys.LORE).orElse(List.of()));
         list.addAll(lore);
         return offer(itemStack, Keys.LORE, list);
+    }
+
+    public static ItemStack addPotionEffect(@Nonnull ItemStack itemStack, @Nonnull PotionEffect potionEffect) {
+        return addPotionEffects(itemStack, List.of(potionEffect));
+    }
+
+    public static ItemStack addPotionEffectType(@Nonnull ItemStack itemStack, @Nonnull Supplier<? extends PotionEffectType> potionEffectType) {
+        return addPotionEffectType(itemStack, potionEffectType.get());
+    }
+
+    public static ItemStack addPotionEffectType(@Nonnull ItemStack itemStack, @Nonnull PotionEffectType potionEffectType) {
+        return addPotionEffectTypes(itemStack, List.of(potionEffectType));
+    }
+
+    public static ItemStack addPotionEffectTypes(@Nonnull ItemStack itemStack, @Nonnull List<PotionEffectType> potionEffectTypes) {
+        return addPotionEffects(itemStack, potionEffectTypes.stream().map(p -> PotionEffect.of(p, 1, Ticks.of(1))).toList());
+    }
+
+    public static ItemStack addPotionEffects(@Nonnull ItemStack itemStack, @Nonnull List<PotionEffect> potionEffect) {
+        List<PotionEffect> list = new ArrayList<>(itemStack.get(Keys.POTION_EFFECTS).orElse(List.of()));
+        list.addAll(potionEffect);
+        return offer(itemStack, Keys.POTION_EFFECTS, list);
+    }
+
+    public static ItemStack customName(@Nonnull ItemStack itemStack, @Nonnull Component name) {
+        return offer(itemStack, Keys.CUSTOM_NAME, name);
+    }
+
+    public static ItemStack durability(@Nonnull ItemStack itemStack, int durability) {
+        return offer(itemStack, Keys.ITEM_DURABILITY, durability);
+    }
+
+    public static <E> ItemStack offer(@Nonnull ItemStack itemStack, @Nonnull Supplier<Key<? extends Value<E>>> key, E value) {
+        itemStack.offer(key, value);
+        return itemStack;
+    }
+
+    public static <E> ItemStack offer(@Nonnull ItemStack itemStack, @Nonnull Key<? extends Value<E>> key, E value) {
+        itemStack.offer(key, value);
+        return itemStack;
     }
 
     public static ItemStack quantity(@Nonnull ItemStack itemStack, int quantity) {
@@ -88,18 +122,6 @@ public class SpongeIconUtil {
         return setEnchantments(itemStack, EnchantmentTypes.stream().map(e -> Enchantment.of(e, 1)).toList());
     }
 
-    public static ItemStack addEnchantmentType(@Nonnull ItemStack itemStack, @Nonnull Supplier<? extends EnchantmentType> EnchantmentType) {
-        return addEnchantmentType(itemStack, EnchantmentType.get());
-    }
-
-    public static ItemStack addEnchantmentType(@Nonnull ItemStack itemStack, @Nonnull EnchantmentType EnchantmentType) {
-        return addEnchantmentTypes(itemStack, List.of(EnchantmentType));
-    }
-
-    public static ItemStack addEnchantmentTypes(@Nonnull ItemStack itemStack, @Nonnull List<EnchantmentType> EnchantmentTypes) {
-        return addEnchantments(itemStack, EnchantmentTypes.stream().map(e -> Enchantment.of(e, 1)).toList());
-    }
-
     /**
      * Warning that all previous enchantments will be removed.
      */
@@ -114,14 +136,18 @@ public class SpongeIconUtil {
         return offer(itemStack, Keys.APPLIED_ENCHANTMENTS, Enchantment);
     }
 
-    public static ItemStack addEnchantment(@Nonnull ItemStack itemStack, @Nonnull Enchantment Enchantment) {
-        return addEnchantments(itemStack, List.of(Enchantment));
+    /**
+     * Warning that all previous lore will be removed.
+     */
+    public static ItemStack setLore(@Nonnull ItemStack itemStack, @Nonnull Component lore) {
+        return setLore(itemStack, List.of(lore));
     }
 
-    public static ItemStack addEnchantments(@Nonnull ItemStack itemStack, @Nonnull List<Enchantment> Enchantment) {
-        List<Enchantment> list = new ArrayList<>(itemStack.get(Keys.APPLIED_ENCHANTMENTS).orElse(List.of()));
-        list.addAll(Enchantment);
-        return offer(itemStack, Keys.APPLIED_ENCHANTMENTS, list);
+    /**
+     * Warning that all previous lore will be removed.
+     */
+    public static ItemStack setLore(@Nonnull ItemStack itemStack, @Nonnull List<Component> lore) {
+        return offer(itemStack, Keys.LORE, lore);
     }
 
     /**
@@ -145,18 +171,6 @@ public class SpongeIconUtil {
         return setPotionEffects(itemStack, potionEffectTypes.stream().map(p -> PotionEffect.of(p, 1, Ticks.of(1))).toList());
     }
 
-    public static ItemStack addPotionEffectType(@Nonnull ItemStack itemStack, @Nonnull Supplier<? extends PotionEffectType> potionEffectType) {
-        return addPotionEffectType(itemStack, potionEffectType.get());
-    }
-
-    public static ItemStack addPotionEffectType(@Nonnull ItemStack itemStack, @Nonnull PotionEffectType potionEffectType) {
-        return addPotionEffectTypes(itemStack, List.of(potionEffectType));
-    }
-
-    public static ItemStack addPotionEffectTypes(@Nonnull ItemStack itemStack, @Nonnull List<PotionEffectType> potionEffectTypes) {
-        return addPotionEffects(itemStack, potionEffectTypes.stream().map(p -> PotionEffect.of(p, 1, Ticks.of(1))).toList());
-    }
-
     /**
      * Warning that all previous potion effects will be removed.
      */
@@ -169,19 +183,5 @@ public class SpongeIconUtil {
      */
     public static ItemStack setPotionEffects(@Nonnull ItemStack itemStack, @Nonnull List<PotionEffect> potionEffect) {
         return offer(itemStack, Keys.POTION_EFFECTS, potionEffect);
-    }
-
-    public static ItemStack addPotionEffect(@Nonnull ItemStack itemStack, @Nonnull PotionEffect potionEffect) {
-        return addPotionEffects(itemStack, List.of(potionEffect));
-    }
-
-    public static ItemStack addPotionEffects(@Nonnull ItemStack itemStack, @Nonnull List<PotionEffect> potionEffect) {
-        List<PotionEffect> list = new ArrayList<>(itemStack.get(Keys.POTION_EFFECTS).orElse(List.of()));
-        list.addAll(potionEffect);
-        return offer(itemStack, Keys.POTION_EFFECTS, list);
-    }
-
-    public static ItemStack durability(@Nonnull ItemStack itemStack, int durability) {
-        return offer(itemStack, Keys.ITEM_DURABILITY, durability);
     }
 }

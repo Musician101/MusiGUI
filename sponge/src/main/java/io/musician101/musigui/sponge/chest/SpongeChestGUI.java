@@ -56,12 +56,12 @@ public abstract class SpongeChestGUI extends ChestGUI<ClickType<?>, ViewableInve
     /**
      * Base Sponge implementation constructor
      *
-     * @param player The player using the GUI.
-     * @param name The name of the GUI.
-     * @param size The number of slots in the GUI.
-     * @param plugin The plugin registering the GUI.
+     * @param player     The player using the GUI.
+     * @param name       The name of the GUI.
+     * @param size       The number of slots in the GUI.
+     * @param plugin     The plugin registering the GUI.
      * @param manualOpen When set to false, the GUI is opened automatically.
-     * @param readOnly If the GUI is read only.
+     * @param readOnly   If the GUI is read only.
      */
     protected SpongeChestGUI(@Nonnull ServerPlayer player, @Nonnull Component name, int size, @Nonnull PluginContainer plugin, boolean manualOpen, boolean readOnly) {
         super(parseInventory(player, size), name, player, plugin, manualOpen);
@@ -112,29 +112,9 @@ public abstract class SpongeChestGUI extends ChestGUI<ClickType<?>, ViewableInve
         }).orElse(readOnly);
     }
 
-    /**
-     * Set a button.
-     *
-     * @param slot The slot to set.
-     * @param itemStack The item to put in the slot.
-     * @param clickType The type of click that triggers the button.
-     * @param action What happens when the button is clicked.
-     */
-    public final <C extends ClickType<?>> void setButton(int slot, @Nonnull ItemStack itemStack, @Nonnull Supplier<C> clickType, @Nonnull Consumer<ServerPlayer> action) {
-        setButton(slot, itemStack, Map.of(clickType.get(), action));
-    }
-
-    /**
-     * Set a button.
-     *
-     * @param slot The slot to set.
-     * @param itemStack The item to put in the slot.
-     * @param actions A map of click types as the key, and actions as the values.
-     */
-    public final <C extends ClickType<?>> void setButton(int slot, @Nonnull ItemStack itemStack, @Nonnull Map<Supplier<C>, Consumer<ServerPlayer>> actions) {
-        buttons.removeIf(g -> g.getSlot() == slot);
-        buttons.add(new GUIButton<>(slot, itemStack, actions.entrySet().stream().collect(Collectors.toMap(e -> e.getKey().get(), Entry::getValue))));
-        addItem(slot, itemStack);
+    @Override
+    public void handle(Cause cause, Container container) {
+        cause.first(ServerPlayer.class).filter(p -> isCorrectInventory(container) && p.uniqueId().equals(container.viewer().uniqueId())).ifPresent(player -> extraCloseHandler.handle(cause, container));
     }
 
     /**
@@ -163,12 +143,32 @@ public abstract class SpongeChestGUI extends ChestGUI<ClickType<?>, ViewableInve
     }
 
     @Override
-    public void handle(Cause cause, Container container) {
-        cause.first(ServerPlayer.class).filter(p -> isCorrectInventory(container) && p.uniqueId().equals(container.viewer().uniqueId())).ifPresent(player -> extraCloseHandler.handle(cause, container));
-    }
-
-    @Override
     protected void removeItem(int slot) {
         inventory.set(slot, ItemStack.empty());
+    }
+
+    /**
+     * Set a button.
+     *
+     * @param slot      The slot to set.
+     * @param itemStack The item to put in the slot.
+     * @param clickType The type of click that triggers the button.
+     * @param action    What happens when the button is clicked.
+     */
+    public final <C extends ClickType<?>> void setButton(int slot, @Nonnull ItemStack itemStack, @Nonnull Supplier<C> clickType, @Nonnull Consumer<ServerPlayer> action) {
+        setButton(slot, itemStack, Map.of(clickType.get(), action));
+    }
+
+    /**
+     * Set a button.
+     *
+     * @param slot      The slot to set.
+     * @param itemStack The item to put in the slot.
+     * @param actions   A map of click types as the key, and actions as the values.
+     */
+    public final <C extends ClickType<?>> void setButton(int slot, @Nonnull ItemStack itemStack, @Nonnull Map<Supplier<C>, Consumer<ServerPlayer>> actions) {
+        buttons.removeIf(g -> g.getSlot() == slot);
+        buttons.add(new GUIButton<>(slot, itemStack, actions.entrySet().stream().collect(Collectors.toMap(e -> e.getKey().get(), Entry::getValue))));
+        addItem(slot, itemStack);
     }
 }

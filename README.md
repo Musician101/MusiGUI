@@ -1,7 +1,9 @@
 # MusiGUI
+
 GUI Library for Spigot, Sponge, and related forks.
 
 Groovy:
+
 ```Groovy
 repositories {
     maven {
@@ -14,7 +16,8 @@ dependencies {
 }
 ```
 
-Kotlin DSL
+Kotlin DSL:
+
 ```Kotlin
 repositories {
     maven("https://jitpack.io")

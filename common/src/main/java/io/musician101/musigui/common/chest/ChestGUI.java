@@ -9,17 +9,22 @@ import javax.annotation.Nonnull;
 /**
  * A class for creating inventory based GUIs.
  *
- * @param <ClickType> The click type class used by the implementation.
- * @param <Inventory> The inventory class used by the implementation.
+ * @param <ClickType>       The click type class used by the implementation.
+ * @param <Inventory>       The inventory class used by the implementation.
  * @param <PluginContainer> The plugin object that's registering this GUI.
- * @param <Player> The player class used by the implementation
- * @param <ItemStack> The item stack class used by the implementation.
- * @param <Name> The text type used by the implementation (i.e. String for Spigot, Component for SpongeAPI, etc.)
- * @param <InventoryView> The viewable inventory class used by the inventory.
- * @param <InventoryClose> The event class that's fired when the inventory is closed.
+ * @param <Player>          The player class used by the implementation
+ * @param <ItemStack>       The item stack class used by the implementation.
+ * @param <Name>            The text type used by the implementation (i.e. String for Spigot, Component for SpongeAPI, etc.)
+ * @param <InventoryView>   The viewable inventory class used by the inventory.
+ * @param <InventoryClose>  The event class that's fired when the inventory is closed.
  */
 public abstract class ChestGUI<ClickType, Inventory, PluginContainer, Player, ItemStack, Name, InventoryView, InventoryClose> {
 
+    /**
+     * The player interacting with this GUI.
+     */
+    @Nonnull
+    protected final Player player;
     /**
      * The buttons that are in this GUI.
      */
@@ -36,21 +41,16 @@ public abstract class ChestGUI<ClickType, Inventory, PluginContainer, Player, It
     @Nonnull
     protected Name name;
     /**
-     * The player interacting with this GUI.
-     */
-    @Nonnull
-    protected final Player player;
-    /**
      * The plugin object for registering/unregistering listeners.
      */
     @Nonnull
     protected PluginContainer plugin;
 
     /**
-     * @param inventory The inventory
-     * @param name The name of the GUI
-     * @param player The player using the GUI
-     * @param plugin The plugin that's registering the GUI
+     * @param inventory  The inventory
+     * @param name       The name of the GUI
+     * @param player     The player using the GUI
+     * @param plugin     The plugin that's registering the GUI
      * @param manualOpen When set to false, the GUI is opened automatically.
      */
     protected ChestGUI(@Nonnull Inventory inventory, @Nonnull Name name, @Nonnull Player player, @Nonnull PluginContainer plugin, boolean manualOpen) {
@@ -66,7 +66,7 @@ public abstract class ChestGUI<ClickType, Inventory, PluginContainer, Player, It
     /**
      * Add an item.
      *
-     * @param slot The slot to put the item in.
+     * @param slot      The slot to put the item in.
      * @param itemStack The item to be added.
      */
     protected abstract void addItem(int slot, @Nonnull ItemStack itemStack);
@@ -104,7 +104,7 @@ public abstract class ChestGUI<ClickType, Inventory, PluginContainer, Player, It
     /**
      * Set a button.
      *
-     * @param slot The slot to set.
+     * @param slot      The slot to set.
      * @param itemStack The item to put in the slot.
      */
     public void setButton(int slot, @Nonnull ItemStack itemStack) {
@@ -114,10 +114,10 @@ public abstract class ChestGUI<ClickType, Inventory, PluginContainer, Player, It
     /**
      * Set a button.
      *
-     * @param slot The slot to set.
+     * @param slot      The slot to set.
      * @param itemStack The item to put in the slot.
      * @param clickType The type of click that triggers the button.
-     * @param action What happens when the button is clicked.
+     * @param action    What happens when the button is clicked.
      */
     public void setButton(int slot, @Nonnull ItemStack itemStack, @Nonnull ClickType clickType, @Nonnull Consumer<Player> action) {
         setButton(slot, itemStack, Map.of(clickType, action));
@@ -126,9 +126,9 @@ public abstract class ChestGUI<ClickType, Inventory, PluginContainer, Player, It
     /**
      * Set a button.
      *
-     * @param slot The slot to set.
+     * @param slot      The slot to set.
      * @param itemStack The item to put in the slot.
-     * @param actions A map of click types as the key, and actions as the values.
+     * @param actions   A map of click types as the key, and actions as the values.
      */
     public void setButton(int slot, @Nonnull ItemStack itemStack, @Nonnull Map<ClickType, Consumer<Player>> actions) {
         buttons.removeIf(g -> g.getSlot() == slot);
@@ -150,7 +150,7 @@ public abstract class ChestGUI<ClickType, Inventory, PluginContainer, Player, It
      *
      * @param buttons The buttons to set.
      */
-    public void setButtons(@Nonnull List<GUIButton<ClickType,Player,ItemStack>> buttons) {
+    public void setButtons(@Nonnull List<GUIButton<ClickType, Player, ItemStack>> buttons) {
         buttons.forEach(button -> {
             this.buttons.removeIf(b -> b.getSlot() == button.getSlot());
             this.buttons.add(button);

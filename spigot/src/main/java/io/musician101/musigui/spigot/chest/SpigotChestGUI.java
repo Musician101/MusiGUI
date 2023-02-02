@@ -25,6 +25,36 @@ import org.bukkit.plugin.java.JavaPlugin;
 public abstract class SpigotChestGUI<J extends JavaPlugin> extends ChestGUI<ClickType, Inventory, J, Player, ItemStack, String, InventoryView, InventoryCloseEvent> implements Listener {
 
     /**
+     * Base Spigot implementation constructor
+     *
+     * @param player     The player using the GUI.
+     * @param name       The name of the GUI.
+     * @param size       The number of slots in the GUI.
+     * @param plugin     The plugin registering the GUI.
+     * @param manualOpen When set to false, the GUI is opened automatically.
+     */
+    protected SpigotChestGUI(@Nonnull Player player, @Nonnull String name, int size, @Nonnull J plugin, boolean manualOpen) {
+        super(Bukkit.createInventory(player, size, name), name, player, plugin, manualOpen);
+    }
+
+    /**
+     * @see ChestGUI#addItem(int, Object)
+     */
+    @Override
+    protected void addItem(int slot, @Nonnull ItemStack itemStack) {
+        inventory.setItem(slot, itemStack);
+    }
+
+    /**
+     * Spigot specific method to handle any extra actions for when an item is dragged in the GUI.
+     *
+     * @param event The {@link InventoryClickEvent}
+     */
+    protected void handleExtraClick(InventoryClickEvent event) {
+
+    }
+
+    /**
      * Spigot specific method to handle any extra actions for when a GUI is closed.
      *
      * @param event The {@link InventoryCloseEvent}
@@ -40,36 +70,6 @@ public abstract class SpigotChestGUI<J extends JavaPlugin> extends ChestGUI<Clic
      */
     protected void handleExtraDrag(InventoryDragEvent event) {
 
-    }
-
-    /**
-     * Spigot specific method to handle any extra actions for when an item is dragged in the GUI.
-     *
-     * @param event The {@link InventoryClickEvent}
-     */
-    protected void handleExtraClick(InventoryClickEvent event) {
-
-    }
-
-    /**
-     * Base Spigot implementation constructor
-     *
-     * @param player The player using the GUI.
-     * @param name The name of the GUI.
-     * @param size The number of slots in the GUI.
-     * @param plugin The plugin registering the GUI.
-     * @param manualOpen When set to false, the GUI is opened automatically.
-     */
-    protected SpigotChestGUI(@Nonnull Player player, @Nonnull String name, int size, @Nonnull J plugin, boolean manualOpen) {
-        super(Bukkit.createInventory(player, size, name), name, player, plugin, manualOpen);
-    }
-
-    /**
-     * @see ChestGUI#addItem(int, Object)
-     */
-    @Override
-    protected void addItem(int slot, @Nonnull ItemStack itemStack) {
-        inventory.setItem(slot, itemStack);
     }
 
     /**

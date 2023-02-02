@@ -36,7 +36,8 @@ public abstract class TextInput<P> {
 
     /**
      * A method provided to ensure that devs can use any input for their needs.
-     * @param player The player entering text.
+     *
+     * @param player  The player entering text.
      * @param message The text the player sent.
      */
     protected abstract void process(P player, String message);

@@ -35,7 +35,7 @@ public abstract class SpongeTextInput extends TextInput<ServerPlayer> {
      *
      * @param plugin The plugin to registering the listeners.
      * @param player The player that we're accepting input from.
-     * @param text Old/default text that can be selected and changed by the player.
+     * @param text   Old/default text that can be selected and changed by the player.
      */
     public SpongeTextInput(@Nonnull PluginContainer plugin, @Nonnull ServerPlayer player, @Nullable String text) {
         super(player);
@@ -54,6 +54,7 @@ public abstract class SpongeTextInput extends TextInput<ServerPlayer> {
 
     /**
      * Check if the provider player is already in the process of a Text Input processor.
+     *
      * @param player The player we're checking.
      * @return True if we're waiting on the player to finish a previous Text Input processor.
      */
