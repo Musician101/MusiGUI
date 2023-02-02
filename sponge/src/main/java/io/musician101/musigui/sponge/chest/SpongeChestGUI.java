@@ -31,21 +31,42 @@ import org.spongepowered.api.util.Ticks;
 import org.spongepowered.math.vector.Vector2i;
 import org.spongepowered.plugin.PluginContainer;
 
+/**
+ * Sponge implementation of {@link ChestGUI}
+ */
 public abstract class SpongeChestGUI extends ChestGUI<ClickType<?>, ViewableInventory, PluginContainer, ServerPlayer, ItemStack, Component, Container, Container> implements CloseHandler, SlotClickHandler {
 
+    /**
+     * If the GUI is read only.
+     */
     private final boolean readOnly;
+    /**
+     * Sponge specific field for handling extra actions for when a {@link ClickType} is used.
+     */
     @Nonnull
-    protected SlotClickHandler extraClickHandler = new SlotClickHandler() {
+    protected SlotClickHandler extraClickHandler;
+    /**
+     * Sponge specific field for handling extra actions for when the GUI is closed.
+     */
+    @Nonnull
+    protected CloseHandler extraCloseHandler = (cause, container) -> {
 
-        @Override
-        public boolean handle(Cause cause, Container container, Slot slot, int slotIndex, ClickType<?> clickType) {
-            return readOnly;
-        }
     };
 
+    /**
+     * Base Sponge implementation constructor
+     *
+     * @param player The player using the GUI.
+     * @param name The name of the GUI.
+     * @param size The number of slots in the GUI.
+     * @param plugin The plugin registering the GUI.
+     * @param manualOpen When set to false, the GUI is opened automatically.
+     * @param readOnly If the GUI is read only.
+     */
     protected SpongeChestGUI(@Nonnull ServerPlayer player, @Nonnull Component name, int size, @Nonnull PluginContainer plugin, boolean manualOpen, boolean readOnly) {
         super(parseInventory(player, size), name, player, plugin, manualOpen);
         this.readOnly = readOnly;
+        extraClickHandler = (cause, container, slot, slotIndex, clickType) -> readOnly;
     }
 
     private static ViewableInventory parseInventory(ServerPlayer player, int size) {
@@ -66,6 +87,9 @@ public abstract class SpongeChestGUI extends ChestGUI<ClickType<?>, ViewableInve
         return builder.completeStructure().carrier(player).build();
     }
 
+    /**
+     * @see ChestGUI#addItem(int, Object)
+     */
     @Override
     protected void addItem(int slot, @Nonnull ItemStack itemStack) {
         inventory.set(slot, itemStack);
@@ -88,21 +112,42 @@ public abstract class SpongeChestGUI extends ChestGUI<ClickType<?>, ViewableInve
         }).orElse(readOnly);
     }
 
+    /**
+     * Set a button.
+     *
+     * @param slot The slot to set.
+     * @param itemStack The item to put in the slot.
+     * @param clickType The type of click that triggers the button.
+     * @param action What happens when the button is clicked.
+     */
     public final <C extends ClickType<?>> void setButton(int slot, @Nonnull ItemStack itemStack, @Nonnull Supplier<C> clickType, @Nonnull Consumer<ServerPlayer> action) {
         setButton(slot, itemStack, Map.of(clickType.get(), action));
     }
 
+    /**
+     * Set a button.
+     *
+     * @param slot The slot to set.
+     * @param itemStack The item to put in the slot.
+     * @param actions A map of click types as the key, and actions as the values.
+     */
     public final <C extends ClickType<?>> void setButton(int slot, @Nonnull ItemStack itemStack, @Nonnull Map<Supplier<C>, Consumer<ServerPlayer>> actions) {
         buttons.removeIf(g -> g.getSlot() == slot);
         buttons.add(new GUIButton<>(slot, itemStack, actions.entrySet().stream().collect(Collectors.toMap(e -> e.getKey().get(), Entry::getValue))));
         addItem(slot, itemStack);
     }
 
+    /**
+     * @see ChestGUI#isCorrectInventory(Object)
+     */
     @Override
     protected boolean isCorrectInventory(@Nonnull Container container) {
         return container.get(Keys.DISPLAY_NAME).filter(name -> name.equals(this.name) && player.uniqueId().equals(container.viewer().uniqueId())).isPresent();
     }
 
+    /**
+     * @see ChestGUI#open()
+     */
     @Override
     public void open() {
         Sponge.server().scheduler().submit(Task.builder().execute(() -> {
@@ -119,7 +164,7 @@ public abstract class SpongeChestGUI extends ChestGUI<ClickType<?>, ViewableInve
 
     @Override
     public void handle(Cause cause, Container container) {
-        cause.first(ServerPlayer.class).filter(p -> isCorrectInventory(container) && p.uniqueId().equals(container.viewer().uniqueId())).ifPresent(player -> extraCloseHandler.accept(container));
+        cause.first(ServerPlayer.class).filter(p -> isCorrectInventory(container) && p.uniqueId().equals(container.viewer().uniqueId())).ifPresent(player -> extraCloseHandler.handle(cause, container));
     }
 
     @Override

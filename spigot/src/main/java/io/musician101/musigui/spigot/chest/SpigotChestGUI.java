@@ -2,7 +2,6 @@ package io.musician101.musigui.spigot.chest;
 
 import io.musician101.musigui.common.chest.ChestGUI;
 import io.musician101.musigui.common.chest.GUIButton;
-import java.util.function.Consumer;
 import javax.annotation.Nonnull;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -18,28 +17,64 @@ import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 
+/**
+ * Spigot implementation of {@link ChestGUI}
+ *
+ * @param <J> The plugin registering the GUI.
+ */
 public abstract class SpigotChestGUI<J extends JavaPlugin> extends ChestGUI<ClickType, Inventory, J, Player, ItemStack, String, InventoryView, InventoryCloseEvent> implements Listener {
 
-    @Nonnull
-    protected Consumer<InventoryClickEvent> extraClickHandler = event -> {
-    };
-    @Nonnull
-    protected Consumer<InventoryDragEvent> extraDragHandler = event -> {
-    };
+    /**
+     * Spigot specific method to handle any extra actions for when a GUI is closed.
+     *
+     * @param event The {@link InventoryCloseEvent}
+     */
+    protected void handleExtraClose(InventoryCloseEvent event) {
 
+    }
+
+    /**
+     * Spigot specific method to handle any extra actions for when an item is dragged in the GUI.
+     *
+     * @param event The {@link InventoryDragEvent}
+     */
+    protected void handleExtraDrag(InventoryDragEvent event) {
+
+    }
+
+    /**
+     * Spigot specific method to handle any extra actions for when an item is dragged in the GUI.
+     *
+     * @param event The {@link InventoryClickEvent}
+     */
+    protected void handleExtraClick(InventoryClickEvent event) {
+
+    }
+
+    /**
+     * Base Spigot implementation constructor
+     *
+     * @param player The player using the GUI.
+     * @param name The name of the GUI.
+     * @param size The number of slots in the GUI.
+     * @param plugin The plugin registering the GUI.
+     * @param manualOpen When set to false, the GUI is opened automatically.
+     */
     protected SpigotChestGUI(@Nonnull Player player, @Nonnull String name, int size, @Nonnull J plugin, boolean manualOpen) {
-        super(parseInventory(player, name, size), name, player, plugin, manualOpen);
+        super(Bukkit.createInventory(player, size, name), name, player, plugin, manualOpen);
     }
 
-    private static Inventory parseInventory(Player player, String name, int size) {
-        return name == null ? Bukkit.createInventory(player, size) : Bukkit.createInventory(player, size, name);
-    }
-
+    /**
+     * @see ChestGUI#addItem(int, Object)
+     */
     @Override
     protected void addItem(int slot, @Nonnull ItemStack itemStack) {
         inventory.setItem(slot, itemStack);
     }
 
+    /**
+     * @see ChestGUI#isCorrectInventory(Object)
+     */
     @Override
     protected boolean isCorrectInventory(@Nonnull InventoryView inventoryView) {
         return inventoryView.getTitle().equals(name) && inventoryView.getPlayer().getUniqueId().equals(player.getUniqueId());
@@ -54,7 +89,7 @@ public abstract class SpigotChestGUI<J extends JavaPlugin> extends ChestGUI<Clic
                 buttons.stream().filter(button -> button.getSlot() == event.getRawSlot()).findFirst().flatMap(button -> button.getAction(event.getClick())).ifPresent(consumer -> consumer.accept(player));
             }
 
-            extraClickHandler.accept(event);
+            handleExtraClick(event);
         }
     }
 
@@ -62,7 +97,7 @@ public abstract class SpigotChestGUI<J extends JavaPlugin> extends ChestGUI<Clic
     public final void onInventoryClose(InventoryCloseEvent event) {
         InventoryView inventory = event.getView();
         if (inventory.getTitle().equals(name) && player.getUniqueId().equals(inventory.getPlayer().getUniqueId())) {
-            extraCloseHandler.accept(event);
+            handleExtraClose(event);
             HandlerList.unregisterAll(this);
         }
     }
@@ -74,12 +109,15 @@ public abstract class SpigotChestGUI<J extends JavaPlugin> extends ChestGUI<Clic
                 event.setCancelled(true);
             }
 
-            extraDragHandler.accept(event);
+            handleExtraDrag(event);
         }
     }
 
+    /**
+     * @see ChestGUI#open()
+     */
     @Override
-    public final void open() {
+    public void open() {
         Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> {
             inventory.clear();
             buttons.forEach(button -> inventory.setItem(button.getSlot(), button.getItemStack()));
@@ -88,6 +126,9 @@ public abstract class SpigotChestGUI<J extends JavaPlugin> extends ChestGUI<Clic
         });
     }
 
+    /**
+     * @see ChestGUI#removeItem(int)
+     */
     @Override
     protected void removeItem(int slot) {
         inventory.setItem(slot, null);

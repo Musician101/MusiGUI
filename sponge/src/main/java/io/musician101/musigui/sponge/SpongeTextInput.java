@@ -1,9 +1,6 @@
 package io.musician101.musigui.sponge;
 
 import io.musician101.musigui.common.TextInput;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import net.kyori.adventure.text.Component;
@@ -18,14 +15,28 @@ import org.spongepowered.api.event.message.PlayerChatEvent;
 import org.spongepowered.api.event.network.ServerSideConnectionEvent;
 import org.spongepowered.plugin.PluginContainer;
 
+/**
+ * Sponge implementation of {@link TextInput}
+ */
 public abstract class SpongeTextInput extends TextInput<ServerPlayer> {
 
-    private static final List<UUID> PLAYERS = new ArrayList<>();
-
+    /**
+     * Start a new Text Input process.
+     *
+     * @param plugin The plugin to registering the listeners.
+     * @param player The player that we're accepting input from.
+     */
     public SpongeTextInput(@Nonnull PluginContainer plugin, @Nonnull ServerPlayer player) {
         this(plugin, player, null);
     }
 
+    /**
+     * Start a new Text Input process.
+     *
+     * @param plugin The plugin to registering the listeners.
+     * @param player The player that we're accepting input from.
+     * @param text Old/default text that can be selected and changed by the player.
+     */
     public SpongeTextInput(@Nonnull PluginContainer plugin, @Nonnull ServerPlayer player, @Nullable String text) {
         super(player);
         if (PLAYERS.contains(player.uniqueId())) {
@@ -41,10 +52,18 @@ public abstract class SpongeTextInput extends TextInput<ServerPlayer> {
         Sponge.eventManager().registerListeners(plugin, this);
     }
 
+    /**
+     * Check if the provider player is already in the process of a Text Input processor.
+     * @param player The player we're checking.
+     * @return True if we're waiting on the player to finish a previous Text Input processor.
+     */
     public static boolean isWaitingForInput(ServerPlayer player) {
         return PLAYERS.contains(player.uniqueId());
     }
 
+    /**
+     * @see TextInput#cancel()
+     */
     @Override
     protected void cancel() {
         Sponge.eventManager().unregisterListeners(this);
