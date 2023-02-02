@@ -16,7 +16,7 @@ subprojects {
     }
 
     group = "io.musician101.musigui"
-    version = "1.0"
+    version = "1.1.0"
 
     repositories {
         mavenCentral()
