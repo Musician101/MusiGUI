@@ -12,7 +12,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'io.musician101.musigui:<module>:<version>'
+    implementation 'com.github.musician101.musigui:<module>:<version>'
 }
 ```
 
@@ -24,6 +24,6 @@ repositories {
 }
 
 dependencies {
-    implementation("io.musician101.musigui:<module>:<version>")
+    implementation("com.github.musician101.musigui:<module>:<version>")
 }
 ```
