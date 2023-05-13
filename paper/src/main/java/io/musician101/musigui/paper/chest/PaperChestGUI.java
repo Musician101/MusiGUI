@@ -19,14 +19,14 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 
 /**
- * Spigot implementation of {@link ChestGUI}
+ * Paper implementation of {@link ChestGUI}
  *
  * @param <J> The plugin registering the GUI.
  */
-public abstract class SpigotChestGUI<J extends JavaPlugin> extends ChestGUI<ClickType, Inventory, J, Player, ItemStack, Component, InventoryView, InventoryCloseEvent> implements Listener {
+public abstract class PaperChestGUI<J extends JavaPlugin> extends ChestGUI<ClickType, Inventory, J, Player, ItemStack, Component, InventoryView, InventoryCloseEvent> implements Listener {
 
     /**
-     * Base Spigot implementation constructor
+     * Base Paper implementation constructor
      *
      * @param player     The player using the GUI.
      * @param name       The name of the GUI.
@@ -34,7 +34,7 @@ public abstract class SpigotChestGUI<J extends JavaPlugin> extends ChestGUI<Clic
      * @param plugin     The plugin registering the GUI.
      * @param manualOpen When set to false, the GUI is opened automatically.
      */
-    protected SpigotChestGUI(@Nonnull Player player, @Nonnull Component name, int size, @Nonnull J plugin, boolean manualOpen) {
+    protected PaperChestGUI(@Nonnull Player player, @Nonnull Component name, int size, @Nonnull J plugin, boolean manualOpen) {
         super(Bukkit.createInventory(player, size, name), name, player, plugin, manualOpen);
     }
 
@@ -47,7 +47,7 @@ public abstract class SpigotChestGUI<J extends JavaPlugin> extends ChestGUI<Clic
     }
 
     /**
-     * Spigot specific method to handle any extra actions for when an item is dragged in the GUI.
+     * Paper specific method to handle any extra actions for when an item is dragged in the GUI.
      *
      * @param event The {@link InventoryClickEvent}
      */
@@ -56,7 +56,7 @@ public abstract class SpigotChestGUI<J extends JavaPlugin> extends ChestGUI<Clic
     }
 
     /**
-     * Spigot specific method to handle any extra actions for when a GUI is closed.
+     * Paper specific method to handle any extra actions for when a GUI is closed.
      *
      * @param event The {@link InventoryCloseEvent}
      */
@@ -65,7 +65,7 @@ public abstract class SpigotChestGUI<J extends JavaPlugin> extends ChestGUI<Clic
     }
 
     /**
-     * Spigot specific method to handle any extra actions for when an item is dragged in the GUI.
+     * Paper specific method to handle any extra actions for when an item is dragged in the GUI.
      *
      * @param event The {@link InventoryDragEvent}
      */
