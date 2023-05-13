@@ -40,5 +40,5 @@ public abstract class TextInput<P> {
      * @param player  The player entering text.
      * @param message The text the player sent.
      */
-    protected abstract void process(P player, String message);
+    protected abstract <T> void process(P player, T message);
 }

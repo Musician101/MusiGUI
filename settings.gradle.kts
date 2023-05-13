@@ -15,4 +15,4 @@ pluginManagement {
     }
 }
 
-include("common", "spigot", "sponge")
+include("common", "paper", "spigot", "sponge")
