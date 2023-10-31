@@ -2,7 +2,6 @@ package io.musician101.musigui.spigot.chest;
 
 import io.musician101.musigui.common.chest.ChestGUI;
 import io.musician101.musigui.common.chest.GUIButton;
-import javax.annotation.Nonnull;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -16,13 +15,14 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Spigot implementation of {@link ChestGUI}
  *
  * @param <J> The plugin registering the GUI.
  */
-public abstract class SpigotChestGUI<J extends JavaPlugin> extends ChestGUI<ClickType, Inventory, J, Player, ItemStack, String, InventoryView, InventoryCloseEvent> implements Listener {
+public abstract class SpigotChestGUI<J extends JavaPlugin> extends ChestGUI<ClickType, Inventory, J, Player, ItemStack, String, InventoryView> implements Listener {
 
     /**
      * Base Spigot implementation constructor
@@ -33,7 +33,7 @@ public abstract class SpigotChestGUI<J extends JavaPlugin> extends ChestGUI<Clic
      * @param plugin     The plugin registering the GUI.
      * @param manualOpen When set to false, the GUI is opened automatically.
      */
-    protected SpigotChestGUI(@Nonnull Player player, @Nonnull String name, int size, @Nonnull J plugin, boolean manualOpen) {
+    protected SpigotChestGUI(@NotNull Player player, @NotNull String name, int size, @NotNull J plugin, boolean manualOpen) {
         super(Bukkit.createInventory(player, size, name), name, player, plugin, manualOpen);
     }
 
@@ -41,7 +41,7 @@ public abstract class SpigotChestGUI<J extends JavaPlugin> extends ChestGUI<Clic
      * @see ChestGUI#addItem(int, Object)
      */
     @Override
-    protected void addItem(int slot, @Nonnull ItemStack itemStack) {
+    protected void addItem(int slot, @NotNull ItemStack itemStack) {
         inventory.setItem(slot, itemStack);
     }
 
@@ -76,7 +76,7 @@ public abstract class SpigotChestGUI<J extends JavaPlugin> extends ChestGUI<Clic
      * @see ChestGUI#isCorrectInventory(Object)
      */
     @Override
-    protected boolean isCorrectInventory(@Nonnull InventoryView inventoryView) {
+    protected boolean isCorrectInventory(@NotNull InventoryView inventoryView) {
         return inventoryView.getTitle().equals(name) && inventoryView.getPlayer().getUniqueId().equals(player.getUniqueId());
     }
 

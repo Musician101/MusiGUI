@@ -1,17 +1,17 @@
 package io.musician101.musigui.sponge;
 
 import io.musician101.musigui.common.TextInput;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.entity.living.player.server.ServerPlayer;
 import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.filter.cause.First;
-import org.spongepowered.api.event.message.PlayerChatEvent;
+import org.spongepowered.api.event.message.PlayerChatEvent.Submit;
 import org.spongepowered.api.event.network.ServerSideConnectionEvent;
 import org.spongepowered.plugin.PluginContainer;
 
@@ -26,7 +26,7 @@ public abstract class SpongeTextInput extends TextInput<ServerPlayer> {
      * @param plugin The plugin to registering the listeners.
      * @param player The player that we're accepting input from.
      */
-    public SpongeTextInput(@Nonnull PluginContainer plugin, @Nonnull ServerPlayer player) {
+    public SpongeTextInput(@NotNull PluginContainer plugin, @NotNull ServerPlayer player) {
         this(plugin, player, null);
     }
 
@@ -37,7 +37,7 @@ public abstract class SpongeTextInput extends TextInput<ServerPlayer> {
      * @param player The player that we're accepting input from.
      * @param text   Old/default text that can be selected and changed by the player.
      */
-    public SpongeTextInput(@Nonnull PluginContainer plugin, @Nonnull ServerPlayer player, @Nullable String text) {
+    public SpongeTextInput(@NotNull PluginContainer plugin, @NotNull ServerPlayer player, @Nullable String text) {
         super(player);
         if (PLAYERS.contains(player.uniqueId())) {
             player.sendMessage(Component.text("An error has occurred. Something is already waiting for your input.", NamedTextColor.RED));
@@ -72,7 +72,7 @@ public abstract class SpongeTextInput extends TextInput<ServerPlayer> {
     }
 
     @Listener
-    public final void onPlayerChat(PlayerChatEvent event, @First ServerPlayer player) {
+    public final void onPlayerChat(Submit event, @First ServerPlayer player) {
         if (player.uniqueId().equals(this.player.uniqueId())) {
             event.setCancelled(true);
             process(player, PlainTextComponentSerializer.plainText().serialize(event.originalMessage()));

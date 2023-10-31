@@ -3,7 +3,7 @@ package io.musician101.musigui.common.chest;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Consumer;
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Button used for GUIs.
@@ -17,12 +17,12 @@ public final class GUIButton<C, P, S> {
     /**
      * A map of click types and their associated actions.
      */
-    @Nonnull
+    @NotNull
     private final Map<C, Consumer<P>> actions;
     /**
      * The item stack representing the button.
      */
-    @Nonnull
+    @NotNull
     private final S itemStack;
     /**
      * The slot the button sits in.
@@ -33,7 +33,7 @@ public final class GUIButton<C, P, S> {
      * @param slot      The slot the button sits in.
      * @param itemStack The item stack to represent the button.
      */
-    public GUIButton(int slot, @Nonnull S itemStack) {
+    public GUIButton(int slot, @NotNull S itemStack) {
         this(slot, itemStack, Map.of());
     }
 
@@ -42,7 +42,7 @@ public final class GUIButton<C, P, S> {
      * @param itemStack The item stack to represent the button.
      * @param actions   A map of click types and their associated actions.
      */
-    public GUIButton(int slot, @Nonnull S itemStack, @Nonnull Map<C, Consumer<P>> actions) {
+    public GUIButton(int slot, @NotNull S itemStack, @NotNull Map<C, Consumer<P>> actions) {
         this.slot = slot;
         this.itemStack = itemStack;
         this.actions = actions;
@@ -54,7 +54,7 @@ public final class GUIButton<C, P, S> {
      * @param clickType The click type to check.
      * @return An {@link Optional} containing the action if it exists.
      */
-    @Nonnull
+    @NotNull
     public Optional<Consumer<P>> getAction(C clickType) {
         return Optional.ofNullable(actions.get(clickType));
     }
@@ -62,7 +62,7 @@ public final class GUIButton<C, P, S> {
     /**
      * @return The item stack representing the button.
      */
-    @Nonnull
+    @NotNull
     public S getItemStack() {
         return itemStack;
     }

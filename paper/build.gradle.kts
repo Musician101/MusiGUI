@@ -3,8 +3,8 @@ repositories {
 }
 
 dependencies {
+    compileOnlyApi("io.papermc.paper:paper-api:1.20.2-R0.1-SNAPSHOT")
     api(project(":common"))
-    api("io.papermc.paper:paper-api:1.19.4-R0.1-SNAPSHOT")
 }
 
 publishing {

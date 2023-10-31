@@ -3,7 +3,7 @@ plugins {
 }
 
 sponge {
-    apiVersion("9.0.0")
+    apiVersion("10.0.0")
 }
 
 dependencies {

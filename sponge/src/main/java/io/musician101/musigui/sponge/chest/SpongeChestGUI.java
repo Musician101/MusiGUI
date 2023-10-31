@@ -9,8 +9,8 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-import javax.annotation.Nonnull;
 import net.kyori.adventure.text.Component;
+import org.jetbrains.annotations.NotNull;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.data.Keys;
 import org.spongepowered.api.entity.living.player.server.ServerPlayer;
@@ -34,7 +34,7 @@ import org.spongepowered.plugin.PluginContainer;
 /**
  * Sponge implementation of {@link ChestGUI}
  */
-public abstract class SpongeChestGUI extends ChestGUI<ClickType<?>, ViewableInventory, PluginContainer, ServerPlayer, ItemStack, Component, Container, Container> implements CloseHandler, SlotClickHandler {
+public abstract class SpongeChestGUI extends ChestGUI<ClickType<?>, ViewableInventory, PluginContainer, ServerPlayer, ItemStack, Component, Container> implements CloseHandler, SlotClickHandler {
 
     /**
      * If the GUI is read only.
@@ -43,12 +43,12 @@ public abstract class SpongeChestGUI extends ChestGUI<ClickType<?>, ViewableInve
     /**
      * Sponge specific field for handling extra actions for when a {@link ClickType} is used.
      */
-    @Nonnull
+    @NotNull
     protected SlotClickHandler extraClickHandler;
     /**
      * Sponge specific field for handling extra actions for when the GUI is closed.
      */
-    @Nonnull
+    @NotNull
     protected CloseHandler extraCloseHandler = (cause, container) -> {
 
     };
@@ -63,7 +63,7 @@ public abstract class SpongeChestGUI extends ChestGUI<ClickType<?>, ViewableInve
      * @param manualOpen When set to false, the GUI is opened automatically.
      * @param readOnly   If the GUI is read only.
      */
-    protected SpongeChestGUI(@Nonnull ServerPlayer player, @Nonnull Component name, int size, @Nonnull PluginContainer plugin, boolean manualOpen, boolean readOnly) {
+    protected SpongeChestGUI(@NotNull ServerPlayer player, @NotNull Component name, int size, @NotNull PluginContainer plugin, boolean manualOpen, boolean readOnly) {
         super(parseInventory(player, size), name, player, plugin, manualOpen);
         this.readOnly = readOnly;
         extraClickHandler = (cause, container, slot, slotIndex, clickType) -> readOnly;
@@ -91,7 +91,7 @@ public abstract class SpongeChestGUI extends ChestGUI<ClickType<?>, ViewableInve
      * @see ChestGUI#addItem(int, Object)
      */
     @Override
-    protected void addItem(int slot, @Nonnull ItemStack itemStack) {
+    protected void addItem(int slot, @NotNull ItemStack itemStack) {
         inventory.set(slot, itemStack);
     }
 
@@ -121,7 +121,7 @@ public abstract class SpongeChestGUI extends ChestGUI<ClickType<?>, ViewableInve
      * @see ChestGUI#isCorrectInventory(Object)
      */
     @Override
-    protected boolean isCorrectInventory(@Nonnull Container container) {
+    protected boolean isCorrectInventory(@NotNull Container container) {
         return container.get(Keys.DISPLAY_NAME).filter(name -> name.equals(this.name) && player.uniqueId().equals(container.viewer().uniqueId())).isPresent();
     }
 
@@ -155,7 +155,7 @@ public abstract class SpongeChestGUI extends ChestGUI<ClickType<?>, ViewableInve
      * @param clickType The type of click that triggers the button.
      * @param action    What happens when the button is clicked.
      */
-    public final <C extends ClickType<?>> void setButton(int slot, @Nonnull ItemStack itemStack, @Nonnull Supplier<C> clickType, @Nonnull Consumer<ServerPlayer> action) {
+    public final <C extends ClickType<?>> void setButton(int slot, @NotNull ItemStack itemStack, @NotNull Supplier<C> clickType, @NotNull Consumer<ServerPlayer> action) {
         setButton(slot, itemStack, Map.of(clickType.get(), action));
     }
 
@@ -166,7 +166,7 @@ public abstract class SpongeChestGUI extends ChestGUI<ClickType<?>, ViewableInve
      * @param itemStack The item to put in the slot.
      * @param actions   A map of click types as the key, and actions as the values.
      */
-    public final <C extends ClickType<?>> void setButton(int slot, @Nonnull ItemStack itemStack, @Nonnull Map<Supplier<C>, Consumer<ServerPlayer>> actions) {
+    public final <C extends ClickType<?>> void setButton(int slot, @NotNull ItemStack itemStack, @NotNull Map<Supplier<C>, Consumer<ServerPlayer>> actions) {
         buttons.removeIf(g -> g.getSlot() == slot);
         buttons.add(new GUIButton<>(slot, itemStack, actions.entrySet().stream().collect(Collectors.toMap(e -> e.getKey().get(), Entry::getValue))));
         addItem(slot, itemStack);

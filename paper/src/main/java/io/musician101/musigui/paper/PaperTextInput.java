@@ -2,7 +2,6 @@ package io.musician101.musigui.paper;
 
 import io.musician101.musigui.common.TextInput;
 import io.papermc.paper.event.player.AsyncChatEvent;
-import javax.annotation.Nonnull;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -10,6 +9,7 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Paper implementation of {@link TextInput}
@@ -22,7 +22,7 @@ public abstract class PaperTextInput extends TextInput<Player> implements Listen
      * @param plugin The plugin to registering the listeners.
      * @param player The player that we're accepting input from.
      */
-    public PaperTextInput(@Nonnull JavaPlugin plugin, @Nonnull Player player) {
+    public PaperTextInput(@NotNull JavaPlugin plugin, @NotNull Player player) {
         super(player);
         Bukkit.getPluginManager().registerEvents(this, plugin);
     }

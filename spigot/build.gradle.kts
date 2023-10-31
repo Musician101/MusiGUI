@@ -4,7 +4,8 @@ repositories {
 
 dependencies {
     api(project(":common"))
-    api("org.spigotmc:spigot-api:1.19.4-R0.1-SNAPSHOT")
+    compileOnly("org.jetbrains:annotations:24.0.1")
+    api("org.spigotmc:spigot-api:1.20.2-R0.1-SNAPSHOT")
 }
 
 publishing {

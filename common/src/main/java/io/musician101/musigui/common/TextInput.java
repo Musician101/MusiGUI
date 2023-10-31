@@ -3,7 +3,7 @@ package io.musician101.musigui.common;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * A class used for processing input from a specific player from chat.
@@ -19,13 +19,13 @@ public abstract class TextInput<P> {
     /**
      * The player this specific processor is waiting for.
      */
-    @Nonnull
+    @NotNull
     protected final P player;
 
     /**
      * @param player The player this specific processor is waiting for.
      */
-    protected TextInput(@Nonnull P player) {
+    protected TextInput(@NotNull P player) {
         this.player = player;
     }
 
