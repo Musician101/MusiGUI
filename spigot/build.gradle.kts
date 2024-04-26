@@ -4,8 +4,8 @@ repositories {
 
 dependencies {
     api(project(":common"))
-    compileOnly("org.jetbrains:annotations:24.0.1")
-    api("org.spigotmc:spigot-api:1.20.2-R0.1-SNAPSHOT")
+    compileOnly("org.jetbrains:annotations:24.1.0")
+    api("org.spigotmc:spigot-api:1.20.4-R0.1-SNAPSHOT")
 }
 
 publishing {
