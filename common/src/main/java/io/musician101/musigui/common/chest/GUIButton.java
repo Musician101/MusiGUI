@@ -1,9 +1,10 @@
 package io.musician101.musigui.common.chest;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Consumer;
-import org.jetbrains.annotations.NotNull;
 
 /**
  * Button used for GUIs.

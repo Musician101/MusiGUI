@@ -1,8 +1,5 @@
 package io.musician101.musigui.sponge.chest;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.function.Supplier;
 import net.kyori.adventure.text.Component;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.api.data.Key;
@@ -14,6 +11,10 @@ import org.spongepowered.api.item.enchantment.Enchantment;
 import org.spongepowered.api.item.enchantment.EnchantmentType;
 import org.spongepowered.api.item.inventory.ItemStack;
 import org.spongepowered.api.util.Ticks;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Supplier;
 
 /**
  * For help creating in-line assignment when the built-in {@link ItemStack.Builder} isn't enough

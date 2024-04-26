@@ -2,13 +2,6 @@ package io.musician101.musigui.sponge.chest;
 
 import io.musician101.musigui.common.chest.ChestGUI;
 import io.musician101.musigui.common.chest.GUIButton;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Optional;
-import java.util.function.Consumer;
-import java.util.function.Supplier;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 import net.kyori.adventure.text.Component;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.api.Sponge;
@@ -30,6 +23,14 @@ import org.spongepowered.api.scheduler.Task;
 import org.spongepowered.api.util.Ticks;
 import org.spongepowered.math.vector.Vector2i;
 import org.spongepowered.plugin.PluginContainer;
+
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Optional;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 /**
  * Sponge implementation of {@link ChestGUI}

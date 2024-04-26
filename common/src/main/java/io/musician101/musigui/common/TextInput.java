@@ -1,9 +1,10 @@
 package io.musician101.musigui.common;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import org.jetbrains.annotations.NotNull;
 
 /**
  * A class used for processing input from a specific player from chat.

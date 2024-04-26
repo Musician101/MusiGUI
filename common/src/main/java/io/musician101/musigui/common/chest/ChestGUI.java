@@ -1,10 +1,11 @@
 package io.musician101.musigui.common.chest;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
-import org.jetbrains.annotations.NotNull;
 
 /**
  * A class for creating inventory based GUIs.
